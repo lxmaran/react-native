@@ -31,7 +31,7 @@ export default class Edit extends Component {
                 <TouchableHighlight onPress={() => console.log(this.state.potato)}>
                     <Text>Update potato</Text>
                 </TouchableHighlight>
-                <GmailIntent/>
+                <GmailIntent potatoName={this.state.potato.name}/>
             </View>
         );
     }

@@ -2,7 +2,7 @@
  * Created by Alex on 11/11/2016.
  */
 import React, {Component} from 'react';
-import {View, Text, TouchableHighlight, Linking, StyleSheet, UIExplorer, TouchableOpacity} from 'react-native';
+import {View, Text, Linking, StyleSheet, UIExplorer, TouchableOpacity} from 'react-native';
 export default class GmailIntent extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +11,7 @@ export default class GmailIntent extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <OpenURLButton url={'https://mail.google.com/mail/u/0/#inbox?compose=new'}/>
+                <OpenURLButton url={`mailto:lxmaran@gmail.com?subject=PotatoUpdate&body=${'The potato: '+ this.props.potatoName + ' has been updated!'}`}/>
             </View>
         );
     }
@@ -37,7 +37,7 @@ export class OpenURLButton extends Component {
                 <TouchableOpacity style={styles.button}
                     onPress={this.handleClick}>
                     <View>
-                        <Text style={styles.buttonText}>Open Gmail</Text>
+                        <Text style={styles.buttonText}>Send yourself an email about the update</Text>
                     </View>
                 </TouchableOpacity>
             </View>

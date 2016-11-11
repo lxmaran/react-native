@@ -15,8 +15,6 @@ export default class Second extends Component{
     }
 
     onLogInPress() {
-        // this.setState({});
-
         var encoded = new Buffer(this.state.username + ':' + this.state.password);
         var encodedAuth = encoded.toString('base64');
         console.log(encodedAuth);
