@@ -11,7 +11,7 @@ export default class GmailIntent extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <OpenURLButton url={`mailto:lxmaran@gmail.com?subject=PotatoUpdate&body=${'The potato: '+ this.props.potatoName + ' has been updated!'}`}/>
+                <OpenURLButton url={`mailto:lxn123@gmail.com?subject=PotatoUpdate&body=${'The potato: '+ this.props.potatoName + ' has been updated!'}`}/>
             </View>
         );
     }
