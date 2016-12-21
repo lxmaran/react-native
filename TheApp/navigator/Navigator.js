@@ -3,9 +3,9 @@
  */
 import React, {Component} from 'react';
 import {Navigator} from 'react-native'
-import First from './First';
-import Second from './Second'
-import Edit from './Edit';
+import First from './PotatoList';
+import Second from './Login'
+import Edit from './EditPotato';
 export default class Navigation extends Component{
     render() {
         return (

@@ -10,9 +10,11 @@ import Navigation from './navigator/Navigator';
 import {
     AppRegistry,
     StyleSheet,
+    AsyncStorage,
 } from 'react-native';
 
 export default class TheApp extends Component {
+
     render() {
         return (
             <Navigation/>

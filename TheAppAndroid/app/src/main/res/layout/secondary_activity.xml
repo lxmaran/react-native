@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Update This Potato"
+            android:hint="@string/update_this_potato"
             android:inputType="textPersonName" />
 
         <Button
@@ -34,6 +34,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="UpdatePotato"
-            android:text="Update" />
+            android:text="@string/update" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/deleteButton"
+            android:onClick="removePotato"
+            android:text="@string/delete_this" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:layout_width="298dp"
+            android:layout_height="291dp"
+            android:id="@+id/idPieChart" />
     </LinearLayout>
+
+
+
 </RelativeLayout>

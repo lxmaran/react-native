@@ -2,4 +2,7 @@
     <string name="app_name">TheApp</string>
     <string name="title_activity_after_log_in">AfterLogIn</string>
     <string name="emptyString" />
+    <string name="delete_this">Delete this</string>
+    <string name="update">Update</string>
+    <string name="update_this_potato">Update This Potato</string>
 </resources>
