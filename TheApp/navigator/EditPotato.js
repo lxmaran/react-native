@@ -4,7 +4,6 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, TextInput, AsyncStorage,StyleSheet} from 'react-native';
 import GmailIntent from './GmailIntent';
-import Chart from 'react-native-chart';
 export default class Edit extends Component {
     constructor(props) {
         super(props);
@@ -58,16 +57,7 @@ export default class Edit extends Component {
                     <Text>Remove This potato</Text>
                 </TouchableHighlight>
                 <GmailIntent potatoName={this.state.potato.name}/>
-                <View style={styles.container}>
-                <Chart
-                    style={styles.chart}
-                    data={data}
-                    verticalGridStep={5}
-                    type="line"
-                    showDataPoint={true}
-                    color={['#e1cd00']}
-                 />
-            </View>
+               
             </View>
         );
     }
