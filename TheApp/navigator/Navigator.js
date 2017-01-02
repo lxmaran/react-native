@@ -3,9 +3,9 @@
  */
 import React, {Component} from 'react';
 import {Navigator} from 'react-native'
-import First from './PotatoList';
-import Second from './Login'
-import Edit from './EditPotato';
+import PotatoList from './PotatoList';
+import Login from './Login'
+import EditPotato from './EditPotato';
 export default class Navigation extends Component{
     render() {
         return (
@@ -19,11 +19,11 @@ export default class Navigation extends Component{
         _navigator = navigator;
         switch (route.id) {
             case 'first':
-                return (<First navigator={navigator} title="first"/>);
+                return (<PotatoList navigator={navigator} title="first"/>);
             case 'second':
-                return (<Second navigator={navigator} title="second" />);
+                return (<Login navigator={navigator} title="second" />);
             case 'edit' :
-                return (<Edit navigator={navigator} potato={route.potato} title="edit"/>)
+                return (<EditPotato navigator={navigator} potato={route.potato} title="edit"/>)
         }
     }
 }

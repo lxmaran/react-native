@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableHighlight, TextInput} from 'react-native';
 import {Buffer} from 'buffer';
-export default class Second extends Component{
+export default class Login extends Component{
     constructor(props){
         super(props);
     }
@@ -15,8 +15,8 @@ export default class Second extends Component{
     }
 
     onLogInPress() {
-        var encoded = new Buffer(this.state.username + ':' + this.state.password);
-        var encodedAuth = encoded.toString('base64');
+        let encoded = new Buffer(this.state.username + ':' + this.state.password);
+        let encodedAuth = encoded.toString('base64');
         console.log(encodedAuth);
         fetch('https://api.github.com/user', {
             headers: {
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     container: {
         top: 10,
         padding: 5,
+        flex: 1,
     },
     input: {
         margin: 1,

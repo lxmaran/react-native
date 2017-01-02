@@ -3,7 +3,7 @@
  */
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, StyleSheet, ListView, AsyncStorage, TextInput, Image,ScrollView,AppRegistry} from 'react-native';
-export default class First extends Component {
+export default class PotatoList extends Component {
 
     async fetchData() {
         const potatoes = await AsyncStorage.getItem("potatoes");
@@ -18,7 +18,7 @@ export default class First extends Component {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = { 
-            dataSource : ds.cloneWithRows([]),
+            dataSource : ds.cloneWithRows([{}]),
             potato : {name: '', id: ''}
         };
 }
@@ -37,8 +37,8 @@ export default class First extends Component {
         if(this.state.potato.name === '' || this.state.potato.id === ''){
             return;
         }
-        var potatoes = await AsyncStorage.getItem("potatoes");
-        var updated = JSON.parse(potatoes)
+        let potatoes = await AsyncStorage.getItem("potatoes");
+        let updated = JSON.parse(potatoes);
         updated.push(this.state.potato);
         AsyncStorage.setItem("potatoes", JSON.stringify(updated), ()=>{ this.fetchData();})
         this.state.potato.name='';
@@ -50,7 +50,7 @@ export default class First extends Component {
             <View style={styles.container}>
             
                 <TouchableHighlight onPress={this.navSecond.bind(this)}>
-                    <Text>Go to logIn</Text>
+                    <Text>Go to LogIn</Text>
                 </TouchableHighlight>
                 <ScrollView>
                     <ListView dataSource={this.state.dataSource}

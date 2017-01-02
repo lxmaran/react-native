@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, TextInput, AsyncStorage,StyleSheet} from 'react-native';
 import GmailIntent from './GmailIntent';
-export default class Edit extends Component {
+export default class EditPotato extends Component {
     constructor(props) {
         super(props);
         this.state = {potato: this.props.potato}
@@ -17,30 +17,30 @@ export default class Edit extends Component {
     }
 
      async removePotato(){
-        var potatoes = await AsyncStorage.getItem("potatoes");
-        var updated = JSON.parse(potatoes)
-        var updated2 = updated.filter((i) => {
+        let potatoes = await AsyncStorage.getItem("potatoes");
+        let updated = JSON.parse(potatoes);
+        let updated2 = updated.filter((i) => {
 	        return i.id !== this.state.potato.id;
         });
-        AsyncStorage.setItem("potatoes", JSON.stringify(updated2), ()=>{ })
+        AsyncStorage.setItem("potatoes", JSON.stringify(updated2), ()=>{ });
         this.navFirst();
     }
 
     async updatePotato(){
-        var potatoes = await AsyncStorage.getItem("potatoes");
-        var updated = JSON.parse(potatoes)
+        let potatoes = await AsyncStorage.getItem("potatoes");
+        let updated = JSON.parse(potatoes);
         updated.forEach((i) => {
             if(i.id === this.state.potato.id){
                 i.name = this.state.potato.name;
             }
         });
-        AsyncStorage.setItem("potatoes", JSON.stringify(updated), ()=>{ })
+        AsyncStorage.setItem("potatoes", JSON.stringify(updated), ()=>{ });
         this.navFirst();
     }
 
     render() {
         return (
-            <View style={{felx:1}}>
+            <View style={{flex:1}}>
                 <TouchableHighlight onPress={this.navFirst.bind(this)}>
                     <Text>Go to potato list</Text>
                 </TouchableHighlight>
@@ -74,9 +74,3 @@ const styles = StyleSheet.create({
         height: 200,
     },
 });
-const data = [[
-    [0, 1],
-    [1, 3],
-    [3, 7],
-    [4, 9],
-]];
