@@ -2,29 +2,56 @@
  * Created by Alex on 11/8/2016.
  */
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableHighlight, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight, TextInput, Alert} from 'react-native';
 import {Buffer} from 'buffer';
 export default class Login extends Component{
     constructor(props){
         super(props);
+        this.state = ({username: '',
+                        password: ''})
     }
     navFirst(){
         this.props.navigator.push({
-            id: 'first'
+            id: 'potato-list'
         })
     }
 
-    onLogInPress() {
-        let encoded = new Buffer(this.state.username + ':' + this.state.password);
-        let encodedAuth = encoded.toString('base64');
-        console.log(encodedAuth);
-        fetch('https://api.github.com/user', {
-            headers: {
-                'Authorization': 'Basic ' + encodedAuth
-            }
-        })
-            .then((response) => response.json())
-            .then ((response) => console.log(response))
+    async loginGitHub(){
+            let encoded = new Buffer(this.state.username + ':' + this.state.password);
+            let encodedAuth = encoded.toString('base64');
+            let response = await fetch('https://api.github.com/user', {
+                headers: {
+                    'Authorization': 'Basic ' + encodedAuth
+                }
+            });
+            return await response.json();
+    }
+
+    async onLogInPress() {
+        if(!this.state.username || !this.state.password || this.state.username === '' || this.state.password === ''){
+            Alert.alert(
+                'Missing credentials',
+                'The username or password fields are empty',
+                [
+                    {text: 'OK', onPress: () => {}},
+                ]
+            );
+        }
+
+        let auth = await this.loginGitHub();
+
+        if (auth.message){
+            Alert.alert(
+                'Auth problem',
+                auth.message,
+                [
+                    {text: 'OK', onPress: () => {}},
+                ]
+            );
+        }
+        else {
+            this.navFirst();
+        }
     }
 
     render() {

@@ -10,20 +10,20 @@ export default class Navigation extends Component{
     render() {
         return (
             <Navigator
-                initialRoute={{id: 'first'}}
+                initialRoute={{id: 'login'}}
                 renderScene={this.navigatorRenderScene} />
                 );
     }
 
     navigatorRenderScene(route, navigator) {
-        _navigator = navigator;
+        let _navigator = navigator;
         switch (route.id) {
-            case 'first':
-                return (<PotatoList navigator={navigator} title="first"/>);
-            case 'second':
-                return (<Login navigator={navigator} title="second" />);
+            case 'potato-list':
+                return (<PotatoList navigator={_navigator} title="potato-list"/>);
+            case 'login':
+                return (<Login navigator={_navigator} title="login" />);
             case 'edit' :
-                return (<EditPotato navigator={navigator} potato={route.potato} title="edit"/>)
+                return (<EditPotato navigator={_navigator} potato={route.potato} title="edit"/>)
         }
     }
 }

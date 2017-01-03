@@ -5,7 +5,6 @@
  */
 
 import React, {Component} from 'react';
-//import {Container, Content, Header, InputGroup, Input, Icon, Button} from 'native-base';
 import Navigation from './navigator/Navigator';
 import {
     AppRegistry,

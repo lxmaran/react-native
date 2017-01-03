@@ -4,37 +4,28 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableHighlight, TextInput, AsyncStorage,StyleSheet} from 'react-native';
 import GmailIntent from './GmailIntent';
+import * as firebase from 'firebase';
+
 export default class EditPotato extends Component {
     constructor(props) {
         super(props);
-        this.state = {potato: this.props.potato}
+        this.state = {potato: this.props.potato,
+            potatoesRef: firebase.database().ref('/potatoes/' + this.props.potato.key)}
     }
 
     navFirst() {
         this.props.navigator.push({
-            id: 'first'
+            id: 'potato-list'
         });
     }
 
      async removePotato(){
-        let potatoes = await AsyncStorage.getItem("potatoes");
-        let updated = JSON.parse(potatoes);
-        let updated2 = updated.filter((i) => {
-	        return i.id !== this.state.potato.id;
-        });
-        AsyncStorage.setItem("potatoes", JSON.stringify(updated2), ()=>{ });
+        await this.state.potatoesRef.remove();
         this.navFirst();
     }
 
     async updatePotato(){
-        let potatoes = await AsyncStorage.getItem("potatoes");
-        let updated = JSON.parse(potatoes);
-        updated.forEach((i) => {
-            if(i.id === this.state.potato.id){
-                i.name = this.state.potato.name;
-            }
-        });
-        AsyncStorage.setItem("potatoes", JSON.stringify(updated), ()=>{ });
+        await this.state.potatoesRef.update(this.state.potato);
         this.navFirst();
     }
 
