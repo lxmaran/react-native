@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "84789261643",
+    "firebase_url": "https://theapp-98991.firebaseio.com",
+    "project_id": "theapp-98991",
+    "storage_bucket": "theapp-98991.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84789261643:android:7379ee62215b76b2",
+        "android_client_info": {
+          "package_name": "com.example.alexmaran.theapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84789261643-a394cpmdgjsfmmmvic1uhvl8rrkdhlr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcfAiTSajOiBnoSt2ubZczZfec98ufk3M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
