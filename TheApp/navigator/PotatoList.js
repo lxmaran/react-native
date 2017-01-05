@@ -20,16 +20,15 @@ import * as firebase from 'firebase';
 import PushNotification from 'react-native-push-notification';
 import PushNotificationController from './PushNotification';
 
-var config = {
-    apiKey: "AIzaSyCGH_0sLgOAOhiZGdo_DIOhQr8xqOPu6sY",
-    authDomain: "potatodb-e887c.firebaseapp.com",
-    databaseURL: "https://potatodb-e887c.firebaseio.com",
-    storageBucket: "potatodb-e887c.appspot.com",
-    messagingSenderId: "690043872519"
-  };
+const config = {
+    apiKey: "-",
+    authDomain: "-",
+    databaseURL: "-",
+    storageBucket: "-",
+    messagingSenderId: "-"
+};
 
 firebase.initializeApp(config);
-
 
 export default class PotatoList extends Component {
 
@@ -40,67 +39,85 @@ export default class PotatoList extends Component {
             dataSource: ds.cloneWithRows([{}]),
             potatoName: '',
             potatoId: '',
-            potatoesRef: firebase.database().ref('/potatoes')
+            potatoesRef: firebase.database().ref('/potatoes'),
+            arrayPotatoes: [],
+            currentAppState: AppState.currentState
         };
 
-        this.handleAppStateChange = this.handleAppStateChange.bind(this);
-        this.fetchData = this.fetchData.bind(this);
+        this._handleAppStateChange = this._handleAppStateChange.bind(this);
     }
 
-    componentDidMount(){
-        AppState.addEventListener('change', this.handleAppStateChange);
-    }
+    componentDidMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
 
-    componentWillUnmount(){
-        AppState.removeListener('change', this.handleAppStateChange);
-    }
+        this.state.potatoesRef.on('child_added', snapshot => {
+            this.addPotatoSnapshot(snapshot);
+            this.updateListViewDataSource(this.state.arrayPotatoes);
 
-    handleAppStateChange(appState){
-        if(appState === 'background'){
-            // this.state.potatoesRef.on('child_added', snapshot => {
-            //     console.log("NEW ADD");
-            //     PushNotification.localNotificationSchedule({
-            //         message: "A potato was added", // (required)
-            //         date: new Date(Date.now())
-            //     });
-            // });
-            this.state.potatoesRef.on('child_changed', snapshot => {
-                console.log("NEW CHANGED");
+            if (this.state.currentAppState === 'background') {
                 PushNotification.localNotificationSchedule({
-                    message: "A potato was changed", // (required)
+                    message: "A potato was added",
                     date: new Date(Date.now())
                 });
-            });
-            this.state.potatoesRef.on('child_removed', snapshot => {
-                console.log("NEW REMOVED");
+            }
+        });
+        this.state.potatoesRef.on('child_changed', snapshot => {
+            this.updatePotatoSnapshot(snapshot);
+            this.updateListViewDataSource(this.state.arrayPotatoes);
+
+            if (this.state.currentAppState === 'background') {
+                PushNotification.localNotificationSchedule({
+                    message: "A potato was changed",
+                    date: new Date(Date.now())
+                });
+            }
+        });
+        this.state.potatoesRef.on('child_removed', snapshot => {
+            this.removePotatoSnapshot(snapshot);
+            this.updateListViewDataSource(this.state.arrayPotatoes);
+            if (this.state.currentAppState === 'background') {
                 PushNotification.localNotificationSchedule({
                     message: "A potato was removed", // (required)
                     date: new Date(Date.now())
                 });
-            });
-
-        }
+            }
+        });
+        this.state.potatoesRef.on('child_moved', snapshot => {
+        });
     }
 
-    async fetchData() {
+    updateListViewDataSource(data) {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        let data = [];
-
-        await this.state.potatoesRef.once('value', function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                let childData = childSnapshot.val();
-                childData.keyString = childSnapshot.key;
-                data.push(childData);
-            });
-        });
-
         this.setState({
             dataSource: ds.cloneWithRows(data)
         });
     }
 
-    componentWillMount() {
-        this.fetchData().done();
+    addPotatoSnapshot(snapshot) {
+        let potato = snapshot.val();
+        potato.keyString = snapshot.key;
+        this.state.arrayPotatoes.push(potato);
+    }
+
+    removePotatoSnapshot(snapshot) {
+        this.state.arrayPotatoes = this.state.arrayPotatoes.filter(potato => potato.keyString === snapshot.key);
+    }
+
+    updatePotatoSnapshot(snapshot) {
+        for (let i = 0; i < this.state.arrayPotatoes.length; i++) {
+            if (this.state.arrayPotatoes[i].keyString === snapshot.key) {
+                this.state.arrayPotatoes[i] = snapshot.val();
+                this.state.arrayPotatoes[i].keyString = snapshot.key;
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange)
+    }
+
+    _handleAppStateChange(currentAppState) {
+        this.setState({currentAppState: currentAppState});
     }
 
     navSecond() {
@@ -110,13 +127,11 @@ export default class PotatoList extends Component {
     }
 
     async addPotato() {
-        if (this.state.potatoName === '' || this.state.potatoId === '' || !this.state.potatoName || !this.state.potatoId) {
-            return;
-        }
+        if (this.state.potatoName === '' || this.state.potatoId === '' || !this.state.potatoName || !this.state.potatoId) return;
+
         let newPostRef = this.state.potatoesRef.push();
         newPostRef.set({name: this.state.potatoName, id: this.state.potatoId});
 
-        this.fetchData();
         this.state.potatoId = '';
         this.state.potatoName = '';
     }
@@ -133,17 +148,17 @@ export default class PotatoList extends Component {
                               renderRow={(data) => <Row navigator={this.props.navigator}  {...data} />}/>
                 </ScrollView>
                 <TextInput
-                    placeholder='New Potato Name'
-                    value={this.state.potatoName}
-                    onChangeText={(text) => {
-                        this.setState({potatoName: text})
-                    }}/>
-                <TextInput
                     placeholder='New potato id'
                     value={this.state.potatoId}
                     onChangeText={(text) => {
                         this.setState({potatoId: text})
                 }}/>
+                <TextInput
+                    placeholder='New Potato Name'
+                    value={this.state.potatoName}
+                    onChangeText={(text) => {
+                        this.setState({potatoName: text})
+                    }}/>
                 <TouchableHighlight onPress={this.addPotato.bind(this)}>
                     <Text>Add potato</Text>
                 </TouchableHighlight>
@@ -156,7 +171,6 @@ export default class PotatoList extends Component {
 export class Row extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.keyString);
     }
 
     navEdit() {
@@ -176,7 +190,6 @@ export class Row extends Component {
             </View>
         );
     }
-
 }
 
 //Styles
